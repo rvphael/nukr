@@ -1,6 +1,6 @@
 (ns nukr.handler
   (:require [compojure.core :refer :all]
-            [nukr.controller.user :refer :all]
+            [nukr.user :refer :all]
             [compojure.handler :as handler]
             [compojure.route :as route]
             [ring.middleware.json :as json]
@@ -11,6 +11,7 @@
   (POST "/create" {:keys [params]}
     (let [{:keys [name email password]} params]
       (response (create name email password))))
+; (GET "/show" [] response (show))
   (route/not-found "Not Found"))
 
 (def app
