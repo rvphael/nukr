@@ -1,7 +1,14 @@
-(ns nukr.user)
+(ns nukr.user
+  (:require [com.stuartsierra.mapgraph :as mg]))
+
+(def db (atom (mg/new-db)))
 
 (defn create [name email password]
-  (with-open [wrtr (clojure.java.io/writer "data.clj" :append true)]
-    (doseq [i [{:id 1, :data {:name name, :email email, :password password}}]]
-      (.write wrtr (str i "\n")))))
+  (swap! db mg/add-id-attr :user/email)
+  (swap! db mg/add 
+                  {:user/name name
+                   :user/email email
+                   :user/password password}))
 
+(defn show [email]
+  (get @db [:user/email email]))

@@ -11,7 +11,9 @@
   (POST "/create" {:keys [params]}
     (let [{:keys [name email password]} params]
       (response (create name email password))))
-; (GET "/show" [] response (show))
+  (POST "/show" {:keys [params]}
+    (let [{:keys [email]} params]
+      (response (show email))))
   (route/not-found "Not Found"))
 
 (def app
