@@ -1,6 +1,6 @@
 (ns nukr.handler
   (:require [compojure.core :refer :all]
-            [nukr.db.user-db :refer :all]
+            [nukr.models.user :refer :all]
             [compojure.handler :as handler]
             [compojure.route :as route]
             [ring.middleware.json :as json]
@@ -10,16 +10,16 @@
   (GET "/" [] "Hello World")
 
   (POST "/create" {:keys [params]}
-    (let [{:keys [name email hidden]} params]
-      (response (create name email hidden))))
+    (let [{:keys [name email]} params]
+      (response (create-user name email))))
 
   (POST "/show" {:keys [params]}
     (let [{:keys [email]} params]
       (response (show email))))
 
-  (POST "/to-connect" {:keys [params]}
+  (POST "/connect" {:keys [params]}
     (let [{:keys [guest host]} params]
-      (response (to-connect guest host))))
+      (response (connect-users guest host))))
 
   (route/not-found "Not Found"))
 
