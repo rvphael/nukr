@@ -13,13 +13,21 @@
     (let [{:keys [name email]} params]
       (response (create-user name email))))
 
-  (POST "/show" {:keys [params]}
-    (let [{:keys [email]} params]
-      (response (show email))))
-
   (POST "/connect" {:keys [params]}
     (let [{:keys [guest host]} params]
       (response (connect-users guest host))))
+
+  (POST "/connections" {:keys [params]}
+    (let [{:keys [email]} params]
+      (response (get-connections email))))
+
+  (POST "/sub-connections" {:keys [params]}
+    (let [{:keys [email]} params]
+      (response (get-sub-connections email))))
+
+  ; (POST "/suggestions" {:keys [params]}
+  ;   (let [{:keys [email]} params]
+  ;     (response (suggestions email))))
 
   (route/not-found "Not Found"))
 

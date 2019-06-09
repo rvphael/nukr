@@ -13,10 +13,41 @@
      :user/hidden false
      :user/connections (vector)}))
 
-(defn get-current-connections [email]
+(defn get-connections [email]
   (def attributes
     (get @db [:user/email email]))
     (get-in attributes [:user/connections]))
+
+(defn build-sub-connections [email connections]
+  (for [email connections]
+    (get-connections email)))
+
+(defn clean-sub-connections [email sub-connections]
+  (remove (fn [x] 
+    (= x email) sub-connections)))
+
+; (remove (fn [x]
+;   (= x "eu"))
+;   items)
+
+;   (remove (fn [x]
+;     (= (count x) 1))
+;     ["a" "aa" "b" "n" "f" "lisp" "clojure" "q" ""])
+
+(defn get-sub-connections [email]
+  (def connections 
+    (get-connections email))
+    (def sub-connections
+      (build-sub-connections email connections))
+      (remove (fn [x]
+        (= x email)) (apply concat sub-connections)))
+
+
+; (defn get-vector-of-sub-connections [email]
+;   (def sub-connections 
+;     (get-sub-connections email))
+;     (for [i (concat sub-connections)] 
+;       (cons i (vector))))
 
 (defn create-connection [email new-connection]
   (swap! db mg/add
@@ -25,9 +56,9 @@
 
 (defn connect-users [guest host]
   (def old-guest-connections
-    (get-current-connections guest))
+    (get-connections guest))
   (def old-host-connections
-    (get-current-connections host))
+    (get-connections host))
   (def new-guest-connections
     (cons host old-guest-connections))
   (def new-host-connections
@@ -37,3 +68,4 @@
 
 (defn show [email]
   (get @db [:user/email email]))
+
