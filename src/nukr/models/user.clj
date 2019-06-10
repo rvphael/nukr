@@ -39,10 +39,6 @@
   (for [email connections]
     (get-connections email)))
 
-(defn clean-sub-connections [email sub-connections]
-  (remove (fn [x]
-            (= x email) sub-connections)))
-
 (defn get-sub-connections [email]
   (def connections
     (get-connections email))
@@ -54,7 +50,11 @@
 (defn get-suggestions [email]
   (def sub-connections
     (get-sub-connections email))
-  (sort-by val > (frequencies sub-connections)))
+  (def sort-suggestions
+    (sort-by val > (frequencies sub-connections)))
+  (for [[key value] sort-suggestions 
+      :when (> value 1)] 
+        key))
 
 (defn show [email]
   (get @db [:user/email email]))
