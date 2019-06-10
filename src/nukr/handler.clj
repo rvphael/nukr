@@ -25,9 +25,9 @@
     (let [{:keys [email]} params]
       (response (get-sub-connections email))))
 
-  ; (POST "/suggestions" {:keys [params]}
-  ;   (let [{:keys [email]} params]
-  ;     (response (suggestions email))))
+  (POST "/suggestions" {:keys [params]}
+    (let [{:keys [email]} params]
+      (response (get-suggestions email))))
 
   (route/not-found "Not Found"))
 

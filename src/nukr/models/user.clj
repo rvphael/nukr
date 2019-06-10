@@ -7,52 +7,21 @@
 (defn create-user [name email]
   (swap! db mg/add-id-attr :user/id :user/email)
   (swap! db mg/add
-    {:user:id (nano-id 5)
-     :user/name name
-     :user/email email
-     :user/hidden false
-     :user/connections (vector)}))
+         {:user:id (nano-id 5)
+          :user/name name
+          :user/email email
+          :user/hidden false
+          :user/connections (vector)}))
+
+(defn create-connection [email new-connection]
+  (swap! db mg/add
+         {:user/email email
+          :user/connections new-connection}))
 
 (defn get-connections [email]
   (def attributes
     (get @db [:user/email email]))
-    (get-in attributes [:user/connections]))
-
-(defn build-sub-connections [email connections]
-  (for [email connections]
-    (get-connections email)))
-
-(defn clean-sub-connections [email sub-connections]
-  (remove (fn [x] 
-    (= x email) sub-connections)))
-
-; (remove (fn [x]
-;   (= x "eu"))
-;   items)
-
-;   (remove (fn [x]
-;     (= (count x) 1))
-;     ["a" "aa" "b" "n" "f" "lisp" "clojure" "q" ""])
-
-(defn get-sub-connections [email]
-  (def connections 
-    (get-connections email))
-    (def sub-connections
-      (build-sub-connections email connections))
-      (remove (fn [x]
-        (= x email)) (apply concat sub-connections)))
-
-
-; (defn get-vector-of-sub-connections [email]
-;   (def sub-connections 
-;     (get-sub-connections email))
-;     (for [i (concat sub-connections)] 
-;       (cons i (vector))))
-
-(defn create-connection [email new-connection]
-  (swap! db mg/add
-    {:user/email email
-     :user/connections new-connection}))
+  (get-in attributes [:user/connections]))
 
 (defn connect-users [guest host]
   (def old-guest-connections
@@ -66,6 +35,26 @@
   (create-connection guest new-guest-connections)
   (create-connection host new-host-connections))
 
+(defn build-sub-connections [email connections]
+  (for [email connections]
+    (get-connections email)))
+
+(defn clean-sub-connections [email sub-connections]
+  (remove (fn [x]
+            (= x email) sub-connections)))
+
+(defn get-sub-connections [email]
+  (def connections
+    (get-connections email))
+  (def sub-connections
+    (build-sub-connections email connections))
+  (remove (fn [x]
+            (= x email)) (apply concat sub-connections)))
+
+(defn get-suggestions [email]
+  (def sub-connections
+    (get-sub-connections email))
+  (sort-by val > (frequencies sub-connections)))
+
 (defn show [email]
   (get @db [:user/email email]))
-
