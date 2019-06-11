@@ -4,7 +4,7 @@
 
 (def db (atom (mg/new-db)))
 
-(defn create-user [name email]
+(defn add-profile [name email]
   (swap! db mg/add-id-attr :user/id :user/email)
   (swap! db mg/add
          {:user:id (nano-id 5)
@@ -23,7 +23,7 @@
     (get @db [:user/email email]))
   (get-in attributes [:user/connections]))
 
-(defn connect-users [guest host]
+(defn connect-profiles [guest host]
   (def old-guest-connections
     (get-connections guest))
   (def old-host-connections
@@ -47,14 +47,31 @@
   (remove (fn [x]
             (= x email)) (apply concat sub-connections)))
 
-(defn get-suggestions [email]
+(defn change-hidden-status [email new-status]
+  (swap! db
+        mg/add
+        {:user/email email
+          :user/hidden new-status}))
+
+(defn get-hidden-status [email]
+  (def attributes
+    (get @db [:user/email email]))
+  (def status
+    (get-in attributes [:user/hidden]))
+    status)
+
+(defn sort-suggestions [email sub-connections]
+  (for [[key value]
+    (sort-by val > 
+      (frequencies sub-connections)) 
+      :when (> value 1)] key))
+
+(defn connection-suggestions [email]
   (def sub-connections
     (get-sub-connections email))
-  (def sort-suggestions
-    (sort-by val > (frequencies sub-connections)))
-  (for [[key value] sort-suggestions 
-      :when (> value 1)] 
-        key))
+  (def suggestions
+    (sort-suggestions email sub-connections))
+    suggestions)
 
 (defn show [email]
   (get @db [:user/email email]))

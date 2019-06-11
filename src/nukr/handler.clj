@@ -9,13 +9,21 @@
 (defroutes app-routes
   (GET "/" [] "Hello World")
 
-  (POST "/create" {:keys [params]}
+  (POST "/add-profile" {:keys [params]}
     (let [{:keys [name email]} params]
-      (response (create-user name email))))
+      (response (add-profile name email))))
 
-  (POST "/connect" {:keys [params]}
+  (PUT "/connect-profiles" {:keys [params]}
     (let [{:keys [guest host]} params]
-      (response (connect-users guest host))))
+      (response (connect-profiles guest host))))
+
+  (POST "/connection-suggestions" {:keys [params]}
+    (let [{:keys [email]} params]
+      (response (connection-suggestions email))))
+
+  (PUT "/change-hidden-status" {:keys [params]}
+    (let [{:keys [email new-status]} params]
+      (response (change-hidden-status email new-status))))
 
   (POST "/connections" {:keys [params]}
     (let [{:keys [email]} params]
@@ -25,9 +33,9 @@
     (let [{:keys [email]} params]
       (response (get-sub-connections email))))
 
-  (POST "/suggestions" {:keys [params]}
+  (POST "/show" {:keys [params]}
     (let [{:keys [email]} params]
-      (response (get-suggestions email))))
+      (response (get-connections email))))
 
   (route/not-found "Not Found"))
 
