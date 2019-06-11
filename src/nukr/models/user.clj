@@ -35,9 +35,21 @@
   (create-connection guest new-guest-connections)
   (create-connection host new-host-connections))
 
+(defn get-profile-details [email]
+  (get @db [:user/email email]))
+
 (defn build-sub-connections [email connections]
-  (for [email connections]
-    (get-connections email)))
+  (def sub-connections
+    (for [email connections]
+      (get-connections email)))
+  (def details 
+    (for [email (apply concat sub-connections)]
+      (get-profile-details email)))
+  (def valid-profiles 
+    (filter #(= (:user/hidden %) false) details))
+  (def get-emails-only 
+    (map #(select-keys % [:user/email]) valid-profiles))
+  (vals (apply concat get-emails-only)))
 
 (defn get-sub-connections [email]
   (def connections

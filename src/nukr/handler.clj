@@ -35,7 +35,7 @@
 
   (POST "/show" {:keys [params]}
     (let [{:keys [email]} params]
-      (response (get-connections email))))
+      (response (show email))))
 
   (route/not-found "Not Found"))
 
