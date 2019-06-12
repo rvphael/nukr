@@ -1,6 +1,6 @@
 (ns nukr.handler
   (:require [compojure.core :refer :all]
-            [nukr.models.user :refer :all]
+            [nukr.models.profile :refer :all]
             [compojure.handler :as handler]
             [compojure.route :as route]
             [ring.middleware.json :as json]

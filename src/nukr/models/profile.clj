@@ -1,6 +1,5 @@
-(ns nukr.models.user
-  (:require [com.stuartsierra.mapgraph :as mg]
-            [nano-id.core :refer [nano-id]]))
+(ns nukr.models.profile
+  (:require [com.stuartsierra.mapgraph :as mg]))
 
 (def db (atom (mg/new-db)))
 
