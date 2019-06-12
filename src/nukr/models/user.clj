@@ -5,10 +5,9 @@
 (def db (atom (mg/new-db)))
 
 (defn add-profile [name email]
-  (swap! db mg/add-id-attr :user/id :user/email)
+  (swap! db mg/add-id-attr :user/email)
   (swap! db mg/add
-         {:user:id (nano-id 5)
-          :user/name name
+         {:user/name name
           :user/email email
           :user/hidden false
           :user/connections (vector)}))
