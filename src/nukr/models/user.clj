@@ -49,7 +49,7 @@
     (filter #(= (:user/hidden %) false) details))
   (def get-emails-only 
     (map #(select-keys % [:user/email]) valid-profiles))
-  (vals (apply concat get-emails-only)))
+   (apply concat get-emails-only))
 
 (defn get-sub-connections [email]
   (def connections
