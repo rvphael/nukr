@@ -11,8 +11,10 @@
     (cons host old-guest-connections))
   (def new-host-connections
     (cons guest old-host-connections))
-  (profile/create-connection guest new-guest-connections)
-  (profile/create-connection host new-host-connections))
+  (profile/create-connection guest 
+    (set new-guest-connections))
+  (profile/create-connection host 
+    (set new-host-connections)))
 
 (defn get-valid-profiles [profile-details]
   (filter #(= (:user/hidden %) false) profile-details))

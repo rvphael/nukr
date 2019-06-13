@@ -4,17 +4,19 @@
 (def db (atom (mg/new-db)))
 
 (defn add-profile [name email]
-  (swap! db mg/add-id-attr :user/email)
+  (try (swap! db mg/add-id-attr :user/email)
   (swap! db mg/add
          {:user/name name
           :user/email email
           :user/hidden false
-          :user/connections (vector)}))
+          :user/connections (vector)})
+  (catch Throwable t t)))
 
 (defn create-connection [email new-connection]
-  (swap! db mg/add
+  (try (swap! db mg/add
          {:user/email email
-          :user/connections new-connection}))
+          :user/connections new-connection})
+  (catch Throwable t t)))
 
 (defn get-connections [email]
   (def attributes
@@ -25,10 +27,11 @@
   (get @db [:user/email email]))
 
 (defn change-hidden-status [email new-status]
-  (swap! db
+  (try (swap! db
         mg/add
         {:user/email email
-          :user/hidden new-status}))
+          :user/hidden new-status})
+  (catch Throwable t t)))
 
 (defn get-hidden-status [email]
   (def attributes

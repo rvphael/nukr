@@ -6,7 +6,8 @@
                  [compojure "1.6.1"]
                  [ring/ring-defaults "0.3.2"]
                  [ring/ring-json "0.4.0"]
-                 [com.stuartsierra/mapgraph "0.2.1"]]
+                 [com.stuartsierra/mapgraph "0.2.1"]
+                 [cheshire "5.8.1"]]
   :plugins [[lein-ring "0.12.5"]]
   :ring {:handler nukr.handler/app}
   :profiles
