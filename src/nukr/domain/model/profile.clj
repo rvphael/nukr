@@ -36,6 +36,3 @@
   (def status
     (get-in attributes [:user/hidden]))
     status)
-
-(defn show [email]
-  (get @db [:user/email email]))

@@ -10,7 +10,7 @@
     [ring.util.response :refer [response]]))
 
 (defroutes app-routes
-  (GET "/" [] "Hello World")
+  (GET "/" [] "Welcome to Nukr!")
 
   (POST "/add-profile" {:keys [params]}
     (let [{:keys [name email]} params]
