@@ -1,8 +1,9 @@
 (ns nukr.handler-test
   (:require [clojure.test :refer :all]
             [ring.mock.request :as mock]
-            [nukr.handler :refer :all]))
-
+            [nukr.handler :refer :all]
+            [cheshire.core :as cheshire]))
+  
 (deftest test-app
   (testing "main route"
     (let [response (app (mock/request :get "/"))]

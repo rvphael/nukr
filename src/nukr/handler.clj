@@ -14,7 +14,6 @@
 
   (POST "/add-profile" {:keys [params]}
     (let [{:keys [name email]} params]
-      (println (profile/add-profile name email))
       (response (profile/add-profile name email))))
 
   (PUT "/connect-profiles" {:keys [params]}
